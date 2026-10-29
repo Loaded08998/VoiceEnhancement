@@ -5,9 +5,9 @@ Goal: Build a 9-pair × 6-model speech enhancement benchmark pipeline (make-pair
 Read this file fully; run `scripts/status.sh` and `git log --oneline -10`; do not redo steps marked DONE; re-verify only items marked IN PROGRESS; continue from NEXT ACTION; obey the Rules (no fabrication, no sudo, ask only for user-only inputs).
 
 ## NEXT ACTION
-LAST COMMAND: TORCH_HOME=./models/torch envs/denoiser/bin/python adapters/demucs.py --in /tmp/smoke_16k.wav --out /tmp/out_demucs.wav --device auto
-RESULT: PASSED (SR=16000, 160000 samples, RMS=-39.9 dBFS, CUDA runtime=0.261s)
-NEXT: Phase 3d: ConvTasNet adapter (envs/asteroid, adapters/convtasnet.py, smoke test)
+LAST COMMAND: HF_HOME=./models/hf ASTEROID_CACHE=./models/asteroid envs/asteroid/bin/python adapters/convtasnet.py --in /tmp/smoke_16k.wav --out /tmp/out_convtasnet.wav --device auto
+RESULT: PASSED (SR=16000, 160000 samples, RMS=-19.6 dBFS, CUDA runtime=0.214s, scaled_by_0.001688 SUBSTITUTE_WEIGHTS)
+NEXT: Phase 3e: DCCRN adapter (adapters/dccrn.py, smoke test)
 
 ## Phase Checklist
 - [x] Phase 0: Bootstrap
@@ -16,7 +16,7 @@ NEXT: Phase 3d: ConvTasNet adapter (envs/asteroid, adapters/convtasnet.py, smoke
 - [x] Phase 3a: MetricGAN+ adapter
 - [x] Phase 3b: DeepFilterNet adapter
 - [x] Phase 3c: Demucs adapter
-- [ ] Phase 3d: ConvTasNet adapter
+- [x] Phase 3d: ConvTasNet adapter
 - [ ] Phase 3e: DCCRN adapter
 - [ ] Phase 3f: CleanUNet adapter
 - [ ] Phase 4: Orchestrator + CLI
@@ -29,8 +29,8 @@ NEXT: Phase 3d: ConvTasNet adapter (envs/asteroid, adapters/convtasnet.py, smoke
 | metricgan_plus | envs/speechbrain | HF:speechbrain/metricgan-plus-voicebank | adapters/metricgan_plus.py | PASSED (smoke 10s: 0.32s CUDA) | - |
 | deepfilternet | envs/dfn | DeepFilterNet3 (auto) | adapters/deepfilternet.py | PASSED (smoke 10s: 0.97s CUDA) | - |
 | demucs | envs/denoiser | dns64 | adapters/demucs.py | PASSED (smoke 10s: 0.26s CUDA) | - |
-| convtasnet | envs/asteroid | JorisCos/ConvTasNet_Libri1Mix_enhsingle_16k ⚠SUBSTITUTE | none | TODO | - |
-| dccrn | envs/asteroid | JorisCos/DCCRNet_Libri1Mix_enhsingle_16k ⚠SUBSTITUTE | none | TODO | - |
+| convtasnet | envs/asteroid | JorisCos/ConvTasNet_Libri1Mix_enhsingle_16k ⚠SUBSTITUTE | adapters/convtasnet.py | PASSED (smoke 10s: 0.21s CUDA) | Unbounded scale clipped & normalized |
+| dccrn | envs/asteroid | JorisCos/DCCRNet_Libri1Mix_enhsingle_16k ⚠SUBSTITUTE | adapters/dccrn.py | TODO | - |
 | cleanunet | envs/cleanunet | DNS-large-full (LFS) | none | TODO | - |
 
 ## SPEC DIGEST
@@ -48,7 +48,7 @@ NEXT: Phase 3d: ConvTasNet adapter (envs/asteroid, adapters/convtasnet.py, smoke
 - ffmpeg: 8.0.1
 - git-lfs: 3.7.1
 - uv: 0.13.6 at /home/krish/.local/bin/uv
-- torch/torchaudio: 2.11.0+cu128 in envs/eval, envs/speechbrain, envs/dfn, envs/denoiser
+- torch/torchaudio: 2.11.0+cu128 in envs/eval, envs/speechbrain, envs/dfn, envs/denoiser, envs/asteroid
 - GPU self-test: PASSED (torch.cuda.is_available()=True, t=torch.randn(1).cuda() OK, archs includes sm_120)
 
 ## DECISIONS & DEVIATIONS
@@ -58,6 +58,7 @@ NEXT: Phase 3d: ConvTasNet adapter (envs/asteroid, adapters/convtasnet.py, smoke
 - Primary benchmark: 9 make-pair combos (3 Clean × 3 Noise)
 - PyTorch version: 2.11.0+cu128 (cu128 index installs 2.11.0 with native sm_120 support)
 - DeepFilterNet shim: added `torchaudio.backend.common.AudioMetaData` shim and passed CPU audio tensor to `enhance()`
+- ConvTasNet scaling: unconstrained model output amplitude scaled down when peak > 1.0
 
 ## WORKING COMMANDS
 - Status: `scripts/status.sh`
@@ -65,6 +66,7 @@ NEXT: Phase 3d: ConvTasNet adapter (envs/asteroid, adapters/convtasnet.py, smoke
 - Smoke MetricGAN+: `HF_HOME=./models/hf envs/speechbrain/bin/python adapters/metricgan_plus.py --in /tmp/smoke_16k.wav --out /tmp/out_metricgan.wav --device auto`
 - Smoke DeepFilterNet: `XDG_CACHE_HOME=./models/cache envs/dfn/bin/python adapters/deepfilternet.py --in /tmp/smoke_48k.wav --out /tmp/out_dfn.wav --device auto`
 - Smoke Demucs: `TORCH_HOME=./models/torch envs/denoiser/bin/python adapters/demucs.py --in /tmp/smoke_16k.wav --out /tmp/out_demucs.wav --device auto`
+- Smoke ConvTasNet: `HF_HOME=./models/hf ASTEROID_CACHE=./models/asteroid envs/asteroid/bin/python adapters/convtasnet.py --in /tmp/smoke_16k.wav --out /tmp/out_convtasnet.wav --device auto`
 - Full run: `./run.sh --snr-db 5 --device auto`
 
 ## KNOWN ISSUES & FIXES
@@ -74,5 +76,5 @@ NEXT: Phase 3d: ConvTasNet adapter (envs/asteroid, adapters/convtasnet.py, smoke
 (none — all answered)
 
 ## Footer
-Last updated: 2026-10-29T13:34:00Z
-Git commit: c1c8ac5
+Last updated: 2026-10-29T13:40:00Z
+Git commit: a0c6da9
