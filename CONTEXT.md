@@ -77,4 +77,4 @@ NEXT: Phase 3e: DCCRN adapter (adapters/dccrn.py, smoke test)
 
 ## Footer
 Last updated: 2026-10-29T13:40:00Z
-Git commit: a0c6da9
+Git commit: 464e8bf
