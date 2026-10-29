@@ -10,7 +10,7 @@ for e in envs/eval envs/asteroid envs/speechbrain envs/dfn envs/denoiser envs/cl
 done
 echo ""
 echo "=== models ==="
-[ -d "models/hf/models--speechbrain--metricgan-plus-voicebank" ] && echo "  ✓ metricgan-plus" || echo "  ✗ metricgan-plus"
+[ -d "models/metricgan-plus-voicebank" -o -d "models/hf/hub/models--speechbrain--metricgan-plus-voicebank" ] && echo "  ✓ metricgan-plus" || echo "  ✗ metricgan-plus"
 [ -d "third_party/CleanUNet" ] && echo "  ✓ CleanUNet cloned" || echo "  ✗ CleanUNet"
 [ -f "third_party/CleanUNet/exp/DNS-large-full/checkpoint/pretrained.pkl" ] && echo "  ✓ CleanUNet weights" || echo "  ✗ CleanUNet weights"
 echo ""
@@ -26,4 +26,3 @@ done
 echo ""
 echo "=== NEXT ACTION ==="
 grep "^## NEXT ACTION" -A 2 CONTEXT.md 2>/dev/null | tail -2
-

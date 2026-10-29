@@ -5,9 +5,9 @@ Goal: Build a 9-pair × 6-model speech enhancement benchmark pipeline (make-pair
 Read this file fully; run `scripts/status.sh` and `git log --oneline -10`; do not redo steps marked DONE; re-verify only items marked IN PROGRESS; continue from NEXT ACTION; obey the Rules (no fabrication, no sudo, ask only for user-only inputs).
 
 ## NEXT ACTION
-LAST COMMAND: HF_HOME=./models/hf ASTEROID_CACHE=./models/asteroid envs/asteroid/bin/python adapters/dccrn.py --in /tmp/smoke_16k.wav --out /tmp/out_dccrn.wav --device auto
-RESULT: PASSED (SR=16000, 160000 samples, RMS=-55.0 dBFS, CUDA runtime=0.290s, SUBSTITUTE_WEIGHTS)
-NEXT: Phase 3f: CleanUNet adapter (envs/cleanunet, clone CleanUNet, pull weights, adapters/cleanunet.py, smoke test)
+LAST COMMAND: envs/cleanunet/bin/python adapters/cleanunet.py --in /tmp/smoke_16k.wav --out /tmp/out_cleanunet.wav --device auto
+RESULT: PASSED (SR=16000, 160000 samples, RMS=-39.9 dBFS, CUDA runtime=0.303s, SHA256 verified)
+NEXT: Phase 4: Orchestrator + CLI (src/bench/pipeline.py, setup.sh, run.sh)
 
 ## Phase Checklist
 - [x] Phase 0: Bootstrap
@@ -18,7 +18,7 @@ NEXT: Phase 3f: CleanUNet adapter (envs/cleanunet, clone CleanUNet, pull weights
 - [x] Phase 3c: Demucs adapter
 - [x] Phase 3d: ConvTasNet adapter
 - [x] Phase 3e: DCCRN adapter
-- [ ] Phase 3f: CleanUNet adapter
+- [x] Phase 3f: CleanUNet adapter
 - [ ] Phase 4: Orchestrator + CLI
 - [ ] Phase 5: End-to-end run
 - [ ] Phase 6: README + final docs
@@ -31,7 +31,7 @@ NEXT: Phase 3f: CleanUNet adapter (envs/cleanunet, clone CleanUNet, pull weights
 | demucs | envs/denoiser | dns64 | adapters/demucs.py | PASSED (smoke 10s: 0.26s CUDA) | - |
 | convtasnet | envs/asteroid | JorisCos/ConvTasNet_Libri1Mix_enhsingle_16k ⚠SUBSTITUTE | adapters/convtasnet.py | PASSED (smoke 10s: 0.21s CUDA) | Unbounded scale clipped & normalized |
 | dccrn | envs/asteroid | JorisCos/DCCRNet_Libri1Mix_enhsingle_16k ⚠SUBSTITUTE | adapters/dccrn.py | PASSED (smoke 10s: 0.29s CUDA) | - |
-| cleanunet | envs/cleanunet | DNS-large-full (LFS) | none | TODO | - |
+| cleanunet | envs/cleanunet | DNS-large-full (LFS) | adapters/cleanunet.py | PASSED (smoke 10s: 0.30s CUDA) | - |
 
 ## SPEC DIGEST
 - 6 models: MetricGAN+ (16kHz), DeepFilterNet3 (48kHz), Demucs dns64 (16kHz), ConvTasNet (16kHz), DCCRN (16kHz), CleanUNet (16kHz)
@@ -48,7 +48,8 @@ NEXT: Phase 3f: CleanUNet adapter (envs/cleanunet, clone CleanUNet, pull weights
 - ffmpeg: 8.0.1
 - git-lfs: 3.7.1
 - uv: 0.13.6 at /home/krish/.local/bin/uv
-- torch/torchaudio: 2.11.0+cu128 in envs/eval, envs/speechbrain, envs/dfn, envs/denoiser, envs/asteroid
+- torch/torchaudio: 2.11.0+cu128 in all 6 envs
+- CleanUNet checkpoint: SHA256 verified 145c101eb5bbfa3ba52fb2b4ec7e5b64a361c102f89291f75e1dd42601d95dc9
 - GPU self-test: PASSED (torch.cuda.is_available()=True, t=torch.randn(1).cuda() OK, archs includes sm_120)
 
 ## DECISIONS & DEVIATIONS
@@ -68,6 +69,7 @@ NEXT: Phase 3f: CleanUNet adapter (envs/cleanunet, clone CleanUNet, pull weights
 - Smoke Demucs: `TORCH_HOME=./models/torch envs/denoiser/bin/python adapters/demucs.py --in /tmp/smoke_16k.wav --out /tmp/out_demucs.wav --device auto`
 - Smoke ConvTasNet: `HF_HOME=./models/hf ASTEROID_CACHE=./models/asteroid envs/asteroid/bin/python adapters/convtasnet.py --in /tmp/smoke_16k.wav --out /tmp/out_convtasnet.wav --device auto`
 - Smoke DCCRN: `HF_HOME=./models/hf ASTEROID_CACHE=./models/asteroid envs/asteroid/bin/python adapters/dccrn.py --in /tmp/smoke_16k.wav --out /tmp/out_dccrn.wav --device auto`
+- Smoke CleanUNet: `envs/cleanunet/bin/python adapters/cleanunet.py --in /tmp/smoke_16k.wav --out /tmp/out_cleanunet.wav --device auto`
 - Full run: `./run.sh --snr-db 5 --device auto`
 
 ## KNOWN ISSUES & FIXES
@@ -77,5 +79,5 @@ NEXT: Phase 3f: CleanUNet adapter (envs/cleanunet, clone CleanUNet, pull weights
 (none — all answered)
 
 ## Footer
-Last updated: 2026-10-29T13:42:00Z
-Git commit: 4e7b94a
+Last updated: 2026-10-29T14:56:00Z
+Git commit: eaf70d7
