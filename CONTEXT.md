@@ -74,4 +74,4 @@ NEXT: Phase 3c: Demucs adapter (envs/denoiser, adapters/demucs.py, smoke test)
 
 ## Footer
 Last updated: 2026-10-29T13:30:00Z
-Git commit: 4456486
+Git commit: d8e1577
