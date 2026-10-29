@@ -5,9 +5,9 @@ Goal: Build a 9-pair × 6-model speech enhancement benchmark pipeline (make-pair
 Read this file fully; run `scripts/status.sh` and `git log --oneline -10`; do not redo steps marked DONE; re-verify only items marked IN PROGRESS; continue from NEXT ACTION; obey the Rules (no fabrication, no sudo, ask only for user-only inputs).
 
 ## NEXT ACTION
-LAST COMMAND: HF_HOME=./models/hf ASTEROID_CACHE=./models/asteroid envs/asteroid/bin/python adapters/convtasnet.py --in /tmp/smoke_16k.wav --out /tmp/out_convtasnet.wav --device auto
-RESULT: PASSED (SR=16000, 160000 samples, RMS=-19.6 dBFS, CUDA runtime=0.214s, scaled_by_0.001688 SUBSTITUTE_WEIGHTS)
-NEXT: Phase 3e: DCCRN adapter (adapters/dccrn.py, smoke test)
+LAST COMMAND: HF_HOME=./models/hf ASTEROID_CACHE=./models/asteroid envs/asteroid/bin/python adapters/dccrn.py --in /tmp/smoke_16k.wav --out /tmp/out_dccrn.wav --device auto
+RESULT: PASSED (SR=16000, 160000 samples, RMS=-55.0 dBFS, CUDA runtime=0.290s, SUBSTITUTE_WEIGHTS)
+NEXT: Phase 3f: CleanUNet adapter (envs/cleanunet, clone CleanUNet, pull weights, adapters/cleanunet.py, smoke test)
 
 ## Phase Checklist
 - [x] Phase 0: Bootstrap
@@ -17,7 +17,7 @@ NEXT: Phase 3e: DCCRN adapter (adapters/dccrn.py, smoke test)
 - [x] Phase 3b: DeepFilterNet adapter
 - [x] Phase 3c: Demucs adapter
 - [x] Phase 3d: ConvTasNet adapter
-- [ ] Phase 3e: DCCRN adapter
+- [x] Phase 3e: DCCRN adapter
 - [ ] Phase 3f: CleanUNet adapter
 - [ ] Phase 4: Orchestrator + CLI
 - [ ] Phase 5: End-to-end run
@@ -30,7 +30,7 @@ NEXT: Phase 3e: DCCRN adapter (adapters/dccrn.py, smoke test)
 | deepfilternet | envs/dfn | DeepFilterNet3 (auto) | adapters/deepfilternet.py | PASSED (smoke 10s: 0.97s CUDA) | - |
 | demucs | envs/denoiser | dns64 | adapters/demucs.py | PASSED (smoke 10s: 0.26s CUDA) | - |
 | convtasnet | envs/asteroid | JorisCos/ConvTasNet_Libri1Mix_enhsingle_16k ⚠SUBSTITUTE | adapters/convtasnet.py | PASSED (smoke 10s: 0.21s CUDA) | Unbounded scale clipped & normalized |
-| dccrn | envs/asteroid | JorisCos/DCCRNet_Libri1Mix_enhsingle_16k ⚠SUBSTITUTE | adapters/dccrn.py | TODO | - |
+| dccrn | envs/asteroid | JorisCos/DCCRNet_Libri1Mix_enhsingle_16k ⚠SUBSTITUTE | adapters/dccrn.py | PASSED (smoke 10s: 0.29s CUDA) | - |
 | cleanunet | envs/cleanunet | DNS-large-full (LFS) | none | TODO | - |
 
 ## SPEC DIGEST
@@ -67,6 +67,7 @@ NEXT: Phase 3e: DCCRN adapter (adapters/dccrn.py, smoke test)
 - Smoke DeepFilterNet: `XDG_CACHE_HOME=./models/cache envs/dfn/bin/python adapters/deepfilternet.py --in /tmp/smoke_48k.wav --out /tmp/out_dfn.wav --device auto`
 - Smoke Demucs: `TORCH_HOME=./models/torch envs/denoiser/bin/python adapters/demucs.py --in /tmp/smoke_16k.wav --out /tmp/out_demucs.wav --device auto`
 - Smoke ConvTasNet: `HF_HOME=./models/hf ASTEROID_CACHE=./models/asteroid envs/asteroid/bin/python adapters/convtasnet.py --in /tmp/smoke_16k.wav --out /tmp/out_convtasnet.wav --device auto`
+- Smoke DCCRN: `HF_HOME=./models/hf ASTEROID_CACHE=./models/asteroid envs/asteroid/bin/python adapters/dccrn.py --in /tmp/smoke_16k.wav --out /tmp/out_dccrn.wav --device auto`
 - Full run: `./run.sh --snr-db 5 --device auto`
 
 ## KNOWN ISSUES & FIXES
@@ -76,5 +77,5 @@ NEXT: Phase 3e: DCCRN adapter (adapters/dccrn.py, smoke test)
 (none — all answered)
 
 ## Footer
-Last updated: 2026-10-29T13:40:00Z
-Git commit: 464e8bf
+Last updated: 2026-10-29T13:42:00Z
+Git commit: 23aeefd
