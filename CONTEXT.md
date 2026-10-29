@@ -72,4 +72,4 @@ NEXT: Phase 3b: DeepFilterNet adapter (envs/dfn, adapters/deepfilternet.py, smok
 
 ## Footer
 Last updated: 2026-10-29T13:24:00Z
-Git commit: 8564a28
+Git commit: fdbe0c5
