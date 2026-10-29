@@ -78,4 +78,4 @@ NEXT: Phase 3f: CleanUNet adapter (envs/cleanunet, clone CleanUNet, pull weights
 
 ## Footer
 Last updated: 2026-10-29T13:42:00Z
-Git commit: 23aeefd
+Git commit: 4e7b94a
