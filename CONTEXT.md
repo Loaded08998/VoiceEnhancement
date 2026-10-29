@@ -5,14 +5,14 @@ Goal: Build a 9-pair × 6-model speech enhancement benchmark pipeline (make-pair
 Read this file fully; run `scripts/status.sh` and `git log --oneline -10`; do not redo steps marked DONE; re-verify only items marked IN PROGRESS; continue from NEXT ACTION; obey the Rules (no fabrication, no sudo, ask only for user-only inputs).
 
 ## NEXT ACTION
-LAST COMMAND: envs/eval/bin/python -m pytest tests/test_audio_io.py -v
-RESULT: 5 passed in 0.22s
-NEXT: Phase 2: Evaluator + make-pair + unit tests (make_pair.py, evaluate.py, report.py, test_evaluate.py)
+LAST COMMAND: envs/eval/bin/python -m pytest tests/ -v
+RESULT: 13 passed in 2.20s
+NEXT: Phase 3a: MetricGAN+ adapter (envs/speechbrain, adapters/metricgan_plus.py, smoke test)
 
 ## Phase Checklist
 - [x] Phase 0: Bootstrap
 - [x] Phase 1: Core audio library
-- [ ] Phase 2: Evaluator + make-pair + tests
+- [x] Phase 2: Evaluator + make-pair + tests
 - [ ] Phase 3a: MetricGAN+ adapter
 - [ ] Phase 3b: DeepFilterNet adapter
 - [ ] Phase 3c: Demucs adapter
@@ -60,8 +60,7 @@ NEXT: Phase 2: Evaluator + make-pair + unit tests (make_pair.py, evaluate.py, re
 
 ## WORKING COMMANDS
 - Status: `scripts/status.sh`
-- Test audio_io: `envs/eval/bin/python -m pytest tests/test_audio_io.py -v`
-- GPU test: `envs/eval/bin/python -c "import torch; print(torch.cuda.is_available()); t=torch.randn(1).cuda(); print('GPU OK'); print(torch.cuda.get_arch_list())"`
+- Test all: `envs/eval/bin/python -m pytest tests/ -v`
 - Smoke test 10s: `ffmpeg -y -i inputs/Clean/Speech1.mp3 -t 10 -ac 1 -ar 16000 /tmp/smoke_16k.wav`
 - Full run: `./run.sh --snr-db 5 --device auto`
 
@@ -72,5 +71,5 @@ NEXT: Phase 2: Evaluator + make-pair + unit tests (make_pair.py, evaluate.py, re
 (none — all answered)
 
 ## Footer
-Last updated: 2026-10-29T13:18:00Z
-Git commit: 89956fd
+Last updated: 2026-10-29T13:21:00Z
+Git commit: 9b60733
