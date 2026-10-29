@@ -109,3 +109,4 @@ logs/full_run.log        ← full run log
 ## Environment
 
 Tested on: Ubuntu 26.04.1 LTS, AMD Ryzen 7 8700F, NVIDIA RTX 5060 (8 GiB), CUDA Driver 595.99.
+
