@@ -80,4 +80,4 @@ NEXT: Phase 4: Orchestrator + CLI (src/bench/pipeline.py, setup.sh, run.sh)
 
 ## Footer
 Last updated: 2026-10-29T14:56:00Z
-Git commit: eaf70d7
+Git commit: 52f05e5
