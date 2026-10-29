@@ -75,4 +75,4 @@ NEXT: Phase 3d: ConvTasNet adapter (envs/asteroid, adapters/convtasnet.py, smoke
 
 ## Footer
 Last updated: 2026-10-29T13:34:00Z
-Git commit: d3a5c1b
+Git commit: c1c8ac5
