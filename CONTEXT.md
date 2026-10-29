@@ -72,4 +72,4 @@ NEXT: Phase 3a: MetricGAN+ adapter (envs/speechbrain, adapters/metricgan_plus.py
 
 ## Footer
 Last updated: 2026-10-29T13:21:00Z
-Git commit: 9b60733
+Git commit: c8530fd
