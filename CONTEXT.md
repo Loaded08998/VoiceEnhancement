@@ -5,9 +5,9 @@ Goal: Build a 9-pair × 6-model speech enhancement benchmark pipeline (make-pair
 Read this file fully; run `scripts/status.sh` and `git log --oneline -10`; do not redo steps marked DONE; re-verify only items marked IN PROGRESS; continue from NEXT ACTION; obey the Rules (no fabrication, no sudo, ask only for user-only inputs).
 
 ## NEXT ACTION
-LAST COMMAND: XDG_CACHE_HOME=./models/cache envs/dfn/bin/python adapters/deepfilternet.py --in /tmp/smoke_48k.wav --out /tmp/out_dfn.wav --device auto
-RESULT: PASSED (SR=48000, 480000 samples, RMS=-40.3 dBFS, CUDA runtime=0.974s)
-NEXT: Phase 3c: Demucs adapter (envs/denoiser, adapters/demucs.py, smoke test)
+LAST COMMAND: TORCH_HOME=./models/torch envs/denoiser/bin/python adapters/demucs.py --in /tmp/smoke_16k.wav --out /tmp/out_demucs.wav --device auto
+RESULT: PASSED (SR=16000, 160000 samples, RMS=-39.9 dBFS, CUDA runtime=0.261s)
+NEXT: Phase 3d: ConvTasNet adapter (envs/asteroid, adapters/convtasnet.py, smoke test)
 
 ## Phase Checklist
 - [x] Phase 0: Bootstrap
@@ -15,7 +15,7 @@ NEXT: Phase 3c: Demucs adapter (envs/denoiser, adapters/demucs.py, smoke test)
 - [x] Phase 2: Evaluator + make-pair + tests
 - [x] Phase 3a: MetricGAN+ adapter
 - [x] Phase 3b: DeepFilterNet adapter
-- [ ] Phase 3c: Demucs adapter
+- [x] Phase 3c: Demucs adapter
 - [ ] Phase 3d: ConvTasNet adapter
 - [ ] Phase 3e: DCCRN adapter
 - [ ] Phase 3f: CleanUNet adapter
@@ -28,7 +28,7 @@ NEXT: Phase 3c: Demucs adapter (envs/denoiser, adapters/demucs.py, smoke test)
 |-------|-----|---------|---------|-------------|-------------|
 | metricgan_plus | envs/speechbrain | HF:speechbrain/metricgan-plus-voicebank | adapters/metricgan_plus.py | PASSED (smoke 10s: 0.32s CUDA) | - |
 | deepfilternet | envs/dfn | DeepFilterNet3 (auto) | adapters/deepfilternet.py | PASSED (smoke 10s: 0.97s CUDA) | - |
-| demucs | envs/denoiser | dns64 | none | TODO | - |
+| demucs | envs/denoiser | dns64 | adapters/demucs.py | PASSED (smoke 10s: 0.26s CUDA) | - |
 | convtasnet | envs/asteroid | JorisCos/ConvTasNet_Libri1Mix_enhsingle_16k ⚠SUBSTITUTE | none | TODO | - |
 | dccrn | envs/asteroid | JorisCos/DCCRNet_Libri1Mix_enhsingle_16k ⚠SUBSTITUTE | none | TODO | - |
 | cleanunet | envs/cleanunet | DNS-large-full (LFS) | none | TODO | - |
@@ -48,7 +48,7 @@ NEXT: Phase 3c: Demucs adapter (envs/denoiser, adapters/demucs.py, smoke test)
 - ffmpeg: 8.0.1
 - git-lfs: 3.7.1
 - uv: 0.13.6 at /home/krish/.local/bin/uv
-- torch/torchaudio: 2.11.0+cu128 in envs/eval, envs/speechbrain, envs/dfn
+- torch/torchaudio: 2.11.0+cu128 in envs/eval, envs/speechbrain, envs/dfn, envs/denoiser
 - GPU self-test: PASSED (torch.cuda.is_available()=True, t=torch.randn(1).cuda() OK, archs includes sm_120)
 
 ## DECISIONS & DEVIATIONS
@@ -64,6 +64,7 @@ NEXT: Phase 3c: Demucs adapter (envs/denoiser, adapters/demucs.py, smoke test)
 - Test all: `envs/eval/bin/python -m pytest tests/ -v`
 - Smoke MetricGAN+: `HF_HOME=./models/hf envs/speechbrain/bin/python adapters/metricgan_plus.py --in /tmp/smoke_16k.wav --out /tmp/out_metricgan.wav --device auto`
 - Smoke DeepFilterNet: `XDG_CACHE_HOME=./models/cache envs/dfn/bin/python adapters/deepfilternet.py --in /tmp/smoke_48k.wav --out /tmp/out_dfn.wav --device auto`
+- Smoke Demucs: `TORCH_HOME=./models/torch envs/denoiser/bin/python adapters/demucs.py --in /tmp/smoke_16k.wav --out /tmp/out_demucs.wav --device auto`
 - Full run: `./run.sh --snr-db 5 --device auto`
 
 ## KNOWN ISSUES & FIXES
@@ -73,5 +74,5 @@ NEXT: Phase 3c: Demucs adapter (envs/denoiser, adapters/demucs.py, smoke test)
 (none — all answered)
 
 ## Footer
-Last updated: 2026-10-29T13:30:00Z
-Git commit: d8e1577
+Last updated: 2026-10-29T13:34:00Z
+Git commit: d3a5c1b
