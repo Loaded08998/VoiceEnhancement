@@ -26,3 +26,4 @@ done
 echo ""
 echo "=== NEXT ACTION ==="
 grep "^## NEXT ACTION" -A 2 CONTEXT.md 2>/dev/null | tail -2
+

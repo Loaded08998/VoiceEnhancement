@@ -133,3 +133,4 @@ def score_pair(ref_wav: str, noisy_wav: str, enhanced_wavs: dict, out_dir: str) 
         json.dump(all_results, f, indent=2, default=str)
 
     return all_results
+

@@ -5,9 +5,9 @@ Goal: Build a 9-pair × 6-model speech enhancement benchmark pipeline (make-pair
 Read this file fully; run `scripts/status.sh` and `git log --oneline -10`; do not redo steps marked DONE; re-verify only items marked IN PROGRESS; continue from NEXT ACTION; obey the Rules (no fabrication, no sudo, ask only for user-only inputs).
 
 ## NEXT ACTION
-LAST COMMAND: envs/eval/bin/python -m pytest tests/ -v
-RESULT: 13 passed in 2.20s
-NEXT: Phase 3a: MetricGAN+ adapter (envs/speechbrain, adapters/metricgan_plus.py, smoke test)
+LAST COMMAND: git commit Phase 2 (8564a28)
+RESULT: Phase 2 complete
+NEXT: [IN PROGRESS] Phase 3a: Create envs/speechbrain and install dependencies
 
 ## Phase Checklist
 - [x] Phase 0: Bootstrap
@@ -26,7 +26,7 @@ NEXT: Phase 3a: MetricGAN+ adapter (envs/speechbrain, adapters/metricgan_plus.py
 ## Model Status Table
 | Model | Env | Weights | Adapter | Last Result | Known Issue |
 |-------|-----|---------|---------|-------------|-------------|
-| metricgan_plus | envs/speechbrain | HF:speechbrain/metricgan-plus-voicebank | none | TODO | - |
+| metricgan_plus | envs/speechbrain | HF:speechbrain/metricgan-plus-voicebank | none | IN PROGRESS | - |
 | deepfilternet | envs/dfn | DeepFilterNet3 (auto) | none | TODO | - |
 | demucs | envs/denoiser | dns64 | none | TODO | - |
 | convtasnet | envs/asteroid | JorisCos/ConvTasNet_Libri1Mix_enhsingle_16k ⚠SUBSTITUTE | none | TODO | - |
@@ -71,5 +71,5 @@ NEXT: Phase 3a: MetricGAN+ adapter (envs/speechbrain, adapters/metricgan_plus.py
 (none — all answered)
 
 ## Footer
-Last updated: 2026-10-29T13:21:00Z
-Git commit: c8530fd
+Last updated: 2026-10-29T13:22:00Z
+Git commit: 8564a28

@@ -137,3 +137,4 @@ class OverlapAddChunker:
             weight[start:end] += w
         np.divide(out, np.maximum(weight, 1e-8), out=out)
         return out
+

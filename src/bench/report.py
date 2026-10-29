@@ -170,3 +170,4 @@ def build_report(all_pair_metrics: dict, out_md_path: str) -> str:
         f.write(report_content)
 
     return report_content
+

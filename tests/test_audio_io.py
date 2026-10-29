@@ -93,3 +93,4 @@ def test_decode_to_wav(tmp_path):
     assert len(data) == n_samples
     assert data.ndim == 1
     assert np.all(np.isfinite(data))
+

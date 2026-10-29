@@ -120,3 +120,4 @@ def test_make_pair_and_score_pair(tmp_path):
     assert 'fake_model' in scores
     assert scores['fake_model']['status'] == 'ok'
     assert scores['fake_model']['si_sdri'] > 0
+
