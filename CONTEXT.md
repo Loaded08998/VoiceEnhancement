@@ -5,9 +5,9 @@ Goal: Build a 9-pair × 6-model speech enhancement benchmark pipeline (make-pair
 Read this file fully; run `scripts/status.sh` and `git log --oneline -10`; do not redo steps marked DONE; re-verify only items marked IN PROGRESS; continue from NEXT ACTION; obey the Rules (no fabrication, no sudo, ask only for user-only inputs).
 
 ## NEXT ACTION
-LAST COMMAND: envs/cleanunet/bin/python adapters/cleanunet.py --in /tmp/smoke_16k.wav --out /tmp/out_cleanunet.wav --device auto
-RESULT: PASSED (SR=16000, 160000 samples, RMS=-39.9 dBFS, CUDA runtime=0.303s, SHA256 verified)
-NEXT: Phase 4: Orchestrator + CLI (src/bench/pipeline.py, setup.sh, run.sh)
+LAST COMMAND: Phase 4 complete — pipeline.py, setup.sh, run.sh verified.
+RESULT: PASSED (setup.sh fast idempotent run verified, run.sh pipeline dry run verified)
+NEXT: Phase 5: End-to-end benchmark execution (./run.sh --snr-db 5 --device auto)
 
 ## Phase Checklist
 - [x] Phase 0: Bootstrap
@@ -19,7 +19,7 @@ NEXT: Phase 4: Orchestrator + CLI (src/bench/pipeline.py, setup.sh, run.sh)
 - [x] Phase 3d: ConvTasNet adapter
 - [x] Phase 3e: DCCRN adapter
 - [x] Phase 3f: CleanUNet adapter
-- [ ] Phase 4: Orchestrator + CLI
+- [x] Phase 4: Orchestrator + CLI
 - [ ] Phase 5: End-to-end run
 - [ ] Phase 6: README + final docs
 
@@ -64,13 +64,14 @@ NEXT: Phase 4: Orchestrator + CLI (src/bench/pipeline.py, setup.sh, run.sh)
 ## WORKING COMMANDS
 - Status: `scripts/status.sh`
 - Test all: `envs/eval/bin/python -m pytest tests/ -v`
+- Setup: `./setup.sh`
+- Run benchmark: `./run.sh --snr-db 5 --device auto`
 - Smoke MetricGAN+: `HF_HOME=./models/hf envs/speechbrain/bin/python adapters/metricgan_plus.py --in /tmp/smoke_16k.wav --out /tmp/out_metricgan.wav --device auto`
 - Smoke DeepFilterNet: `XDG_CACHE_HOME=./models/cache envs/dfn/bin/python adapters/deepfilternet.py --in /tmp/smoke_48k.wav --out /tmp/out_dfn.wav --device auto`
 - Smoke Demucs: `TORCH_HOME=./models/torch envs/denoiser/bin/python adapters/demucs.py --in /tmp/smoke_16k.wav --out /tmp/out_demucs.wav --device auto`
 - Smoke ConvTasNet: `HF_HOME=./models/hf ASTEROID_CACHE=./models/asteroid envs/asteroid/bin/python adapters/convtasnet.py --in /tmp/smoke_16k.wav --out /tmp/out_convtasnet.wav --device auto`
 - Smoke DCCRN: `HF_HOME=./models/hf ASTEROID_CACHE=./models/asteroid envs/asteroid/bin/python adapters/dccrn.py --in /tmp/smoke_16k.wav --out /tmp/out_dccrn.wav --device auto`
 - Smoke CleanUNet: `envs/cleanunet/bin/python adapters/cleanunet.py --in /tmp/smoke_16k.wav --out /tmp/out_cleanunet.wav --device auto`
-- Full run: `./run.sh --snr-db 5 --device auto`
 
 ## KNOWN ISSUES & FIXES
 - DeepFilterNet with torchaudio 2.11: torchaudio refactored backend module; shimmed `torchaudio.backend.common.AudioMetaData` in `adapters/deepfilternet.py`.
@@ -79,5 +80,5 @@ NEXT: Phase 4: Orchestrator + CLI (src/bench/pipeline.py, setup.sh, run.sh)
 (none — all answered)
 
 ## Footer
-Last updated: 2026-10-29T14:56:00Z
-Git commit: 52f05e5
+Last updated: 2026-10-29T15:05:00Z
+Git commit: e5f2a55
