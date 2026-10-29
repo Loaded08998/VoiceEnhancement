@@ -5,8 +5,8 @@ Goal: Build a 9-pair × 6-model speech enhancement benchmark pipeline (make-pair
 Read this file fully; run `scripts/status.sh` and `git log --oneline -10`; do not redo steps marked DONE; re-verify only items marked IN PROGRESS; continue from NEXT ACTION; obey the Rules (no fabrication, no sudo, ask only for user-only inputs).
 
 ## NEXT ACTION
-LAST COMMAND: Phase 4 complete — pipeline.py, setup.sh, run.sh verified.
-RESULT: PASSED (setup.sh fast idempotent run verified, run.sh pipeline dry run verified)
+LAST COMMAND: git commit -m "Phase 4: orchestrator, setup.sh, run.sh" (dfd1f87)
+RESULT: PASSED
 NEXT: Phase 5: End-to-end benchmark execution (./run.sh --snr-db 5 --device auto)
 
 ## Phase Checklist
@@ -80,5 +80,5 @@ NEXT: Phase 5: End-to-end benchmark execution (./run.sh --snr-db 5 --device auto
 (none — all answered)
 
 ## Footer
-Last updated: 2026-10-29T15:05:00Z
-Git commit: e5f2a55
+Last updated: 2026-10-29T15:06:00Z
+Git commit: dfd1f87
