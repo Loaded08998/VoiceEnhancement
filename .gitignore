@@ -1,0 +1,14 @@
+envs/
+results/
+logs/
+models/
+third_party/
+.uv-cache/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+inputs/pairs/
+references/
+CONTEXT.md.tmp
+.env-facts
