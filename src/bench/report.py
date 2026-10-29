@@ -162,6 +162,11 @@ def build_report(all_pair_metrics: dict, out_md_path: str) -> str:
         '5. **Evaluation Metric Alignment**: All outputs were aligned to reference speech using'
         ' FFT cross-correlation before computing SI-SDR and PESQ-WB.'
     )
+    lines.append(
+        '6. **Input Level Normalization**: After mixing, each noisy mixture and its clean'
+        ' reference were peak-normalized to 0.95. This preserves the requested SNR while'
+        ' avoiding clipping and keeping level-sensitive models within their trained range.'
+    )
     lines.append('')
 
     report_content = '\n'.join(lines)

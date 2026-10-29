@@ -14,3 +14,4 @@ export HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-0}"
 export PYTHONPATH="$SCRIPT_DIR:${PYTHONPATH:-}"
 
 exec "$SCRIPT_DIR/envs/eval/bin/python" "$SCRIPT_DIR/src/bench/pipeline.py" "$@"
+

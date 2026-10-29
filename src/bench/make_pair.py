@@ -9,6 +9,7 @@ import soundfile as sf
 import soxr
 
 TARGET_SR = 16000
+TARGET_PEAK = 0.95
 
 
 def rms(x: np.ndarray) -> float:
@@ -61,14 +62,13 @@ def make_pair(
     # Mix
     mixture = clean + noise
 
-    # Peak protect
-    peak = np.max(np.abs(mixture))
-    if peak > 0.99:
-        scale = 0.99 / peak
-        mixture = mixture * scale
-        clean_ref = clean * scale
-    else:
-        clean_ref = clean.copy()
+    # Normalize mixture to a standard peak level while preserving SNR. Clean
+    # speech sources in this benchmark are quiet (~-40 dBFS RMS), which puts
+    # level-sensitive models (e.g. MetricGAN+) far outside their trained range.
+    peak = float(np.max(np.abs(mixture)))
+    scale = TARGET_PEAK / peak if peak > 0 else 1.0
+    mixture = mixture * scale
+    clean_ref = clean * scale
 
     # Save reference WAV
     os.makedirs(os.path.dirname(os.path.abspath(out_ref_wav)), exist_ok=True)

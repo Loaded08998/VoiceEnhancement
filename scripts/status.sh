@@ -16,7 +16,9 @@ echo "=== models ==="
 echo ""
 echo "=== outputs ==="
 for pair in results/*/; do
-  [ -d "$pair" ] && echo "  $pair: $(ls ${pair}enhanced/ 2>/dev/null | wc -l) enhanced files"
+  [ -d "$pair" ] || continue
+  n=$(find "$pair" -maxdepth 1 -name '*.wav' ! -name 'noisy_*' | wc -l)
+  echo "  $pair: $n enhanced files"
 done
 echo ""
 echo "=== recent logs ==="

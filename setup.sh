@@ -95,3 +95,4 @@ echo "Verifying GPU in envs/eval..."
 envs/eval/bin/python -c "import torch; assert torch.cuda.is_available(), 'CUDA not available'; print('✓ GPU OK:', torch.cuda.get_device_name(0), '| archs:', torch.cuda.get_arch_list())"
 
 echo "=== Setup complete! All 6 environments and dependencies ready. ==="
+
