@@ -5,16 +5,16 @@ Goal: Build a 9-pair × 6-model speech enhancement benchmark pipeline (make-pair
 Read this file fully; run `scripts/status.sh` and `git log --oneline -10`; do not redo steps marked DONE; re-verify only items marked IN PROGRESS; continue from NEXT ACTION; obey the Rules (no fabrication, no sudo, ask only for user-only inputs).
 
 ## NEXT ACTION
-LAST COMMAND: HF_HOME=./models/hf envs/speechbrain/bin/python adapters/metricgan_plus.py --in /tmp/smoke_16k.wav --out /tmp/out_metricgan.wav --device auto
-RESULT: PASSED (SR=16000, 160000 samples, RMS=-25.0 dBFS, CUDA runtime=0.324s)
-NEXT: Phase 3b: DeepFilterNet adapter (envs/dfn, adapters/deepfilternet.py, smoke test)
+LAST COMMAND: XDG_CACHE_HOME=./models/cache envs/dfn/bin/python adapters/deepfilternet.py --in /tmp/smoke_48k.wav --out /tmp/out_dfn.wav --device auto
+RESULT: PASSED (SR=48000, 480000 samples, RMS=-40.3 dBFS, CUDA runtime=0.974s)
+NEXT: Phase 3c: Demucs adapter (envs/denoiser, adapters/demucs.py, smoke test)
 
 ## Phase Checklist
 - [x] Phase 0: Bootstrap
 - [x] Phase 1: Core audio library
 - [x] Phase 2: Evaluator + make-pair + tests
 - [x] Phase 3a: MetricGAN+ adapter
-- [ ] Phase 3b: DeepFilterNet adapter
+- [x] Phase 3b: DeepFilterNet adapter
 - [ ] Phase 3c: Demucs adapter
 - [ ] Phase 3d: ConvTasNet adapter
 - [ ] Phase 3e: DCCRN adapter
@@ -27,7 +27,7 @@ NEXT: Phase 3b: DeepFilterNet adapter (envs/dfn, adapters/deepfilternet.py, smok
 | Model | Env | Weights | Adapter | Last Result | Known Issue |
 |-------|-----|---------|---------|-------------|-------------|
 | metricgan_plus | envs/speechbrain | HF:speechbrain/metricgan-plus-voicebank | adapters/metricgan_plus.py | PASSED (smoke 10s: 0.32s CUDA) | - |
-| deepfilternet | envs/dfn | DeepFilterNet3 (auto) | none | TODO | - |
+| deepfilternet | envs/dfn | DeepFilterNet3 (auto) | adapters/deepfilternet.py | PASSED (smoke 10s: 0.97s CUDA) | - |
 | demucs | envs/denoiser | dns64 | none | TODO | - |
 | convtasnet | envs/asteroid | JorisCos/ConvTasNet_Libri1Mix_enhsingle_16k ⚠SUBSTITUTE | none | TODO | - |
 | dccrn | envs/asteroid | JorisCos/DCCRNet_Libri1Mix_enhsingle_16k ⚠SUBSTITUTE | none | TODO | - |
@@ -48,7 +48,7 @@ NEXT: Phase 3b: DeepFilterNet adapter (envs/dfn, adapters/deepfilternet.py, smok
 - ffmpeg: 8.0.1
 - git-lfs: 3.7.1
 - uv: 0.13.6 at /home/krish/.local/bin/uv
-- torch/torchaudio: 2.11.0+cu128 in envs/eval, envs/speechbrain
+- torch/torchaudio: 2.11.0+cu128 in envs/eval, envs/speechbrain, envs/dfn
 - GPU self-test: PASSED (torch.cuda.is_available()=True, t=torch.randn(1).cuda() OK, archs includes sm_120)
 
 ## DECISIONS & DEVIATIONS
@@ -57,19 +57,21 @@ NEXT: Phase 3b: DeepFilterNet adapter (envs/dfn, adapters/deepfilternet.py, smok
 - MP3 export: disabled (WAV only)
 - Primary benchmark: 9 make-pair combos (3 Clean × 3 Noise)
 - PyTorch version: 2.11.0+cu128 (cu128 index installs 2.11.0 with native sm_120 support)
+- DeepFilterNet shim: added `torchaudio.backend.common.AudioMetaData` shim and passed CPU audio tensor to `enhance()`
 
 ## WORKING COMMANDS
 - Status: `scripts/status.sh`
 - Test all: `envs/eval/bin/python -m pytest tests/ -v`
 - Smoke MetricGAN+: `HF_HOME=./models/hf envs/speechbrain/bin/python adapters/metricgan_plus.py --in /tmp/smoke_16k.wav --out /tmp/out_metricgan.wav --device auto`
+- Smoke DeepFilterNet: `XDG_CACHE_HOME=./models/cache envs/dfn/bin/python adapters/deepfilternet.py --in /tmp/smoke_48k.wav --out /tmp/out_dfn.wav --device auto`
 - Full run: `./run.sh --snr-db 5 --device auto`
 
 ## KNOWN ISSUES & FIXES
-(none yet)
+- DeepFilterNet with torchaudio 2.11: torchaudio refactored backend module; shimmed `torchaudio.backend.common.AudioMetaData` in `adapters/deepfilternet.py`.
 
 ## OPEN QUESTIONS / BLOCKERS
 (none — all answered)
 
 ## Footer
-Last updated: 2026-10-29T13:24:00Z
-Git commit: fdbe0c5
+Last updated: 2026-10-29T13:30:00Z
+Git commit: 4456486
