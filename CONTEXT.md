@@ -5,15 +5,15 @@ Goal: Build a 9-pair × 6-model speech enhancement benchmark pipeline (make-pair
 Read this file fully; run `scripts/status.sh` and `git log --oneline -10`; do not redo steps marked DONE; re-verify only items marked IN PROGRESS; continue from NEXT ACTION; obey the Rules (no fabrication, no sudo, ask only for user-only inputs).
 
 ## NEXT ACTION
-LAST COMMAND: git commit Phase 2 (8564a28)
-RESULT: Phase 2 complete
-NEXT: [IN PROGRESS] Phase 3a: Create envs/speechbrain and install dependencies
+LAST COMMAND: HF_HOME=./models/hf envs/speechbrain/bin/python adapters/metricgan_plus.py --in /tmp/smoke_16k.wav --out /tmp/out_metricgan.wav --device auto
+RESULT: PASSED (SR=16000, 160000 samples, RMS=-25.0 dBFS, CUDA runtime=0.324s)
+NEXT: Phase 3b: DeepFilterNet adapter (envs/dfn, adapters/deepfilternet.py, smoke test)
 
 ## Phase Checklist
 - [x] Phase 0: Bootstrap
 - [x] Phase 1: Core audio library
 - [x] Phase 2: Evaluator + make-pair + tests
-- [ ] Phase 3a: MetricGAN+ adapter
+- [x] Phase 3a: MetricGAN+ adapter
 - [ ] Phase 3b: DeepFilterNet adapter
 - [ ] Phase 3c: Demucs adapter
 - [ ] Phase 3d: ConvTasNet adapter
@@ -26,7 +26,7 @@ NEXT: [IN PROGRESS] Phase 3a: Create envs/speechbrain and install dependencies
 ## Model Status Table
 | Model | Env | Weights | Adapter | Last Result | Known Issue |
 |-------|-----|---------|---------|-------------|-------------|
-| metricgan_plus | envs/speechbrain | HF:speechbrain/metricgan-plus-voicebank | none | IN PROGRESS | - |
+| metricgan_plus | envs/speechbrain | HF:speechbrain/metricgan-plus-voicebank | adapters/metricgan_plus.py | PASSED (smoke 10s: 0.32s CUDA) | - |
 | deepfilternet | envs/dfn | DeepFilterNet3 (auto) | none | TODO | - |
 | demucs | envs/denoiser | dns64 | none | TODO | - |
 | convtasnet | envs/asteroid | JorisCos/ConvTasNet_Libri1Mix_enhsingle_16k ⚠SUBSTITUTE | none | TODO | - |
@@ -48,7 +48,7 @@ NEXT: [IN PROGRESS] Phase 3a: Create envs/speechbrain and install dependencies
 - ffmpeg: 8.0.1
 - git-lfs: 3.7.1
 - uv: 0.13.6 at /home/krish/.local/bin/uv
-- torch/torchaudio: 2.11.0+cu128 in envs/eval
+- torch/torchaudio: 2.11.0+cu128 in envs/eval, envs/speechbrain
 - GPU self-test: PASSED (torch.cuda.is_available()=True, t=torch.randn(1).cuda() OK, archs includes sm_120)
 
 ## DECISIONS & DEVIATIONS
@@ -61,7 +61,7 @@ NEXT: [IN PROGRESS] Phase 3a: Create envs/speechbrain and install dependencies
 ## WORKING COMMANDS
 - Status: `scripts/status.sh`
 - Test all: `envs/eval/bin/python -m pytest tests/ -v`
-- Smoke test 10s: `ffmpeg -y -i inputs/Clean/Speech1.mp3 -t 10 -ac 1 -ar 16000 /tmp/smoke_16k.wav`
+- Smoke MetricGAN+: `HF_HOME=./models/hf envs/speechbrain/bin/python adapters/metricgan_plus.py --in /tmp/smoke_16k.wav --out /tmp/out_metricgan.wav --device auto`
 - Full run: `./run.sh --snr-db 5 --device auto`
 
 ## KNOWN ISSUES & FIXES
@@ -71,5 +71,5 @@ NEXT: [IN PROGRESS] Phase 3a: Create envs/speechbrain and install dependencies
 (none — all answered)
 
 ## Footer
-Last updated: 2026-10-29T13:22:00Z
+Last updated: 2026-10-29T13:24:00Z
 Git commit: 8564a28
