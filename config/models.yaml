@@ -1,0 +1,51 @@
+snr_db: 5
+
+models:
+  metricgan_plus:
+    env: envs/speechbrain
+    native_sr: 16000
+    weights: speechbrain/metricgan-plus-voicebank
+    chunk_s: null
+    overlap_s: null
+    substitute_weights: false
+
+  deepfilternet:
+    env: envs/dfn
+    native_sr: 48000
+    weights: DeepFilterNet3
+    chunk_s: null
+    overlap_s: null
+    substitute_weights: false
+
+  demucs:
+    env: envs/denoiser
+    native_sr: 16000
+    weights: dns64
+    chunk_s: null
+    overlap_s: null
+    substitute_weights: false
+
+  convtasnet:
+    env: envs/asteroid
+    native_sr: 16000
+    weights: JorisCos/ConvTasNet_Libri1Mix_enhsingle_16k
+    chunk_s: 20
+    overlap_s: 1
+    substitute_weights: true
+
+  dccrn:
+    env: envs/asteroid
+    native_sr: 16000
+    weights: JorisCos/DCCRNet_Libri1Mix_enhsingle_16k
+    chunk_s: 20
+    overlap_s: 1
+    substitute_weights: true
+
+  cleanunet:
+    env: envs/cleanunet
+    native_sr: 16000
+    weights: third_party/CleanUNet/exp/DNS-large-full/checkpoint/pretrained.pkl
+    weights_sha256: 145c101eb5bbfa3ba52fb2b4ec7e5b64a361c102f89291f75e1dd42601d95dc9
+    chunk_s: 10
+    overlap_s: 1
+    substitute_weights: false
